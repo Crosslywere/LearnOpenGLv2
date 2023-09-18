@@ -1,7 +1,10 @@
 #include <iostream>
+#include <Window.h>
 
 int main()
 {
-	std::cout << "Hello OpenGL" << std::endl;
-	exit(EXIT_SUCCESS);
+	if (Window::Create())
+		while (Window::IsRunning())
+			Window::Update();
+	Window::Terminate();
 }
