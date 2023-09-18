@@ -12,6 +12,9 @@ Window::~Window()
 bool Window::Create(const WindowProps& props)
 {
 	glfwInit();
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	window = glfwCreateWindow(props.Width, props.Height, props.Title, nullptr, nullptr);
 	if (!window)
 	{
@@ -24,6 +27,7 @@ bool Window::Create(const WindowProps& props)
 		std::cout << "\033[41m\033[30mERROR::Window\033[0m Failed to load OpenGL functions!" << std::endl;
 		return false;
 	}
+	std::cout << "\033[42m\033[30mINFO::Window\033[0m OpenGL version - " << glGetString(GL_VERSION) << std::endl;
 	glfwSwapInterval(1);
 	return true;
 }
@@ -40,6 +44,6 @@ bool Window::IsRunning()
 
 void Window::Update()
 {
-	glfwPollEvents();
 	glfwSwapBuffers(window);
+	glfwPollEvents();
 }
