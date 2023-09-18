@@ -13,8 +13,7 @@ struct WindowProps
 };
 
 /**
- * @brief A singleton class that is responsible for creating the window
- * for rendering.
+ * @brief A singleton class that is responsible for creating the window for rendering
  */
 class Window
 {
@@ -26,7 +25,6 @@ public:
 	static void Update();
 private:
 	Window() = default;
-	static Window* s_Instance;
 };
 
 #endif // WINDOW_H

@@ -15,13 +15,13 @@ bool Window::Create(const WindowProps& props)
 	window = glfwCreateWindow(props.Width, props.Height, props.Title, nullptr, nullptr);
 	if (!window)
 	{
-		std::cout << "\033[31mERROR\033[0mFailed to create window!" << std::endl;
+		std::cout << "\033[41m\033[30mERROR::Window\033[0m Failed to create window!" << std::endl;
 		return false;
 	}
 	glfwMakeContextCurrent(window);
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
-		std::cout << "\033[41m\033[30mERROR\033[0m Failed to load OpenGL functions!" << std::endl;
+		std::cout << "\033[41m\033[30mERROR::Window\033[0m Failed to load OpenGL functions!" << std::endl;
 		return false;
 	}
 	glfwSwapInterval(1);
