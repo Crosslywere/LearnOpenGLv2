@@ -80,6 +80,7 @@ bool Window::IsRunning()
 void Window::Render()
 {
 	// Rendering the ImGui frame
+	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	// Swapping the buffer
 	glfwSwapBuffers(window);
