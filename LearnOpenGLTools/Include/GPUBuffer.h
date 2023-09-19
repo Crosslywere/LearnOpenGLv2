@@ -10,7 +10,7 @@ class GPUBuffer
 {
 public:
 	GPUBuffer() = default;
-	virtual ~GPUBuffer() = 0;
+	virtual ~GPUBuffer() {}
 	virtual void Bind() const = 0;
 	virtual void Unbind() const = 0;
 protected:
