@@ -1,6 +1,7 @@
 #include <iostream>
 #include <Window.h>
 #include <glad/glad.h>
+#include <imgui.h>
 #include <iostream>
 
 void ProcessInputs()
@@ -28,13 +29,21 @@ int main()
 		glBufferData(GL_ARRAY_BUFFER, sizeof(verts), verts, GL_STATIC_DRAW);
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 		glEnableVertexAttribArray(0);
-		glClearColor(0.1f, 0.2f, 0.4f, 1.0f);
+		float clearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
 		while (Window::IsRunning())
 		{
+			Window::Poll();
 			ProcessInputs();
+			glClearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
 			glClear(GL_COLOR_BUFFER_BIT);
 			glDrawArrays(GL_TRIANGLES, 0, 3);
-			Window::Update();
+			// Creating the ImGui frame
+			ImGui::NewFrame();
+			ImGui::Begin("Set Background Color");
+			ImGui::ColorEdit4("Background Color", clearColor);
+			ImGui::End();
+			ImGui::Render();
+			Window::Render();
 		}
 	}
 	Window::Terminate();

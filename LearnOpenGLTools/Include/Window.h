@@ -32,7 +32,6 @@ struct WindowProps
 class Window
 {
 public:
-	~Window();
 	/**
 	 * @brief Should be called first before any OpenGL function as this preps a render context as
 	 * well as OpenGL function pointers through "glad"
@@ -56,9 +55,13 @@ public:
 	 */
 	static bool IsRunning();
 	/**
-	 * @brief Updates the windows frame buffer and polls for window events
+	 * @brief Updates the window's frame buffer
 	 */
-	static void Update();
+	static void Render();
+	/**
+	 * @brief Update's window events
+	 */
+	static void Poll();
 	/**
 	 * @brief Checks if the key specified is pressed
 	 * 
