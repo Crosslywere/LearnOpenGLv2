@@ -3,6 +3,14 @@
 #include <glad/glad.h>
 #include <iostream>
 
+void ProcessInputs()
+{
+	if (Window::IsKeyPressed(KeyCode::Forward))
+	{
+		Window::Close();
+	}
+}
+
 int main()
 {
 	if (Window::Create())
@@ -23,6 +31,7 @@ int main()
 		glClearColor(0.1f, 0.2f, 0.4f, 1.0f);
 		while (Window::IsRunning())
 		{
+			ProcessInputs();
 			glClear(GL_COLOR_BUFFER_BIT);
 			glDrawArrays(GL_TRIANGLES, 0, 3);
 			Window::Update();
