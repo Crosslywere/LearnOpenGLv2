@@ -12,6 +12,7 @@ Window::~Window()
 bool Window::Create(const WindowProps& props)
 {
 	glfwInit();
+	// Setting OpenGL to #version 330 core
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -27,7 +28,9 @@ bool Window::Create(const WindowProps& props)
 		std::cout << "\033[41m\033[30mERROR::Window\033[0m Failed to load OpenGL functions!" << std::endl;
 		return false;
 	}
+	// Printing the OpenGL version
 	std::cout << "\033[42m\033[30mINFO::Window\033[0m OpenGL version - " << glGetString(GL_VERSION) << std::endl;
+	// Setting vertical sync as enabled
 	glfwSwapInterval(1);
 	return true;
 }
@@ -44,7 +47,9 @@ bool Window::IsRunning()
 
 void Window::Update()
 {
+	// Swapping the buffer
 	glfwSwapBuffers(window);
+	// Polling the event
 	glfwPollEvents();
 }
 
