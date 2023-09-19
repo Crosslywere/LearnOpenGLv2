@@ -3,6 +3,20 @@
 #define WINDOW_H
 
 /**
+ * @brief The set of keys used by the window
+ */
+enum class KeyCode
+{
+	Escape = 0,
+	Forward,
+	Backward,
+	Left,
+	Right,
+	Up,
+	Down,
+};
+
+/**
  * @brief A struct used to define the properties of a window
  */
 struct WindowProps
@@ -23,6 +37,18 @@ public:
 	static void Terminate();
 	static bool IsRunning();
 	static void Update();
+	/**
+	 * @brief Checks if the key specified is pressed
+	 * 
+	 * @param keyCode A KeyCode enum class that represents each possible key
+	 * 
+	 * @return Returns true if the button specified is pressed and false otherwise
+	 */
+	static bool IsKeyPressed(const KeyCode& keyCode);
+	/**
+	 * @brief Sets the window to be closed
+	 */
+	static void Close();
 private:
 	Window() = default;
 };

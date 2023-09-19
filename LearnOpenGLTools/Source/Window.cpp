@@ -47,3 +47,31 @@ void Window::Update()
 	glfwSwapBuffers(window);
 	glfwPollEvents();
 }
+
+bool Window::IsKeyPressed(const KeyCode& keyCode)
+{
+	switch (keyCode)
+	{
+	case KeyCode::Forward:
+		return glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS;
+	case KeyCode::Backward:
+		return glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS;
+	case KeyCode::Left:
+		return glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS;
+	case KeyCode::Right:
+		return glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS;
+	case KeyCode::Up:
+		return glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS;
+	case KeyCode::Down:
+		return glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS;
+	case KeyCode::Escape:
+		return glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS;
+	default:
+		return false;
+	}
+}
+
+void Window::Close()
+{
+	glfwSetWindowShouldClose(window, GLFW_TRUE);
+}
