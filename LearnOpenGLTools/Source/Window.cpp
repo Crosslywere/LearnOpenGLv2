@@ -7,7 +7,8 @@
 #include <iostream>
 
 static GLFWwindow* window;
-unsigned int winWidth, winHeight;
+static WindowProps winProps;
+static unsigned int winWidth, winHeight;
 
 static void ErrorCallback(int error, const char* description)
 {
@@ -21,6 +22,7 @@ static void FrameResizeCallback(GLFWwindow* window, int width, int height)
 
 bool Window::Create(const WindowProps& props)
 {
+	winProps = props;
 	glfwSetErrorCallback(ErrorCallback);
 	glfwInit();
 	// Setting OpenGL to #version 330 core
@@ -114,19 +116,19 @@ bool Window::IsKeyPressed(const KeyCode& keyCode)
 {
 	switch (keyCode)
 	{
-	case KeyCode::Forward:
+	case KeyCode::Key_W:
 		return glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS;
-	case KeyCode::Backward:
+	case KeyCode::Key_S:
 		return glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS;
-	case KeyCode::Left:
+	case KeyCode::Key_A:
 		return glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS;
-	case KeyCode::Right:
+	case KeyCode::Key_D:
 		return glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS;
-	case KeyCode::Up:
+	case KeyCode::Key_Space:
 		return glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS;
-	case KeyCode::Down:
+	case KeyCode::Key_LControl:
 		return glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS;
-	case KeyCode::Escape:
+	case KeyCode::Key_Escape:
 		return glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS;
 	default:
 		return false;

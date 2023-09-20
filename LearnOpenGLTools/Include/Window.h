@@ -18,13 +18,13 @@ public:
  */
 enum class KeyCode
 {
-	Escape = 0,
-	Forward,
-	Backward,
-	Left,
-	Right,
-	Up,
-	Down,
+	Key_Escape = 0,
+	Key_W,
+	Key_S,
+	Key_A,
+	Key_D,
+	Key_Space,
+	Key_LControl,
 };
 
 /**
