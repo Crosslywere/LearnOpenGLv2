@@ -93,6 +93,23 @@ void Window::Poll()
 	glfwPollEvents();
 }
 
+void Window::Run(Application& app)
+{
+	float past = 0.0f;
+	while (IsRunning())
+	{
+		float now = (float)glfwGetTime();
+		float delta = now - past;
+		past = now;
+		Poll();
+		app.OnUpdate(delta);
+		app.OnRender();
+		ImGui::NewFrame();
+		app.OnRenderImGui();
+		Render();
+	}
+}
+
 bool Window::IsKeyPressed(const KeyCode& keyCode)
 {
 	switch (keyCode)

@@ -3,6 +3,17 @@
 #define WINDOW_H
 
 /**
+ * @brief A virtual Application class to be implemented by an application to be run on the window
+ */
+class Application
+{
+public:
+	virtual void OnUpdate(float deltaTime) {}
+	virtual void OnRender() {}
+	virtual void OnRenderImGui() {}
+};
+
+/**
  * @brief The set of keys used by the window
  */
 enum class KeyCode
@@ -74,6 +85,8 @@ public:
 	 * @brief Sets the window to be closed
 	 */
 	static void Close();
+
+	static void Run(Application& app);
 private:
 	Window() = default;
 };
