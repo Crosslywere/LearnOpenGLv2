@@ -54,26 +54,26 @@ static void CheckLinkStatus(unsigned int program)
 Shader::Shader(const char* vertexShaderPath, const char* fragmentShaderPath)
 {
 	m_BufferID = glCreateProgram();
+	unsigned int vs{ 0 }, fs{ 0 };
 	if (vertexShaderPath != nullptr)
 	{
-		unsigned int vs = CompileShaderFromFile(vertexShaderPath, GL_VERTEX_SHADER);
+		vs = CompileShaderFromFile(vertexShaderPath, GL_VERTEX_SHADER);
 		glAttachShader(m_BufferID, vs);
-		glDeleteShader(vs);
 	}
 	if (fragmentShaderPath != nullptr)
 	{
-		unsigned int fs = CompileShaderFromFile(fragmentShaderPath, GL_FRAGMENT_SHADER);
+		fs = CompileShaderFromFile(fragmentShaderPath, GL_FRAGMENT_SHADER);
 		glAttachShader(m_BufferID, fs);
-		glDeleteShader(fs);
 	}
 	glLinkProgram(m_BufferID);
+	glDeleteShader(vs);
+	glDeleteShader(fs);
 	CheckLinkStatus(m_BufferID);
 }
 
 Shader::~Shader()
 {
-	if (m_BufferID != 0)
-		glDeleteProgram(m_BufferID);
+	if (m_BufferID > 0) glDeleteProgram(m_BufferID);
 }
 
 void Shader::Bind() const
@@ -84,4 +84,30 @@ void Shader::Bind() const
 void Shader::Unbind() const
 {
 	glUseProgram(0);
+}
+
+void Shader::SetFloat(const std::string& name, float v0)
+{
+	glUniform1f(GetUniformLocation(name), v0);
+}
+
+void Shader::SetVec3(const std::string& name, float v0, float v1, float v2)
+{
+	glUniform3f(GetUniformLocation(name), v0, v1, v2);
+}
+
+int Shader::GetUniformLocation(const std::string& name)
+{
+	if (m_UniformLocationMap.find(name) != m_UniformLocationMap.end())
+	{
+		return m_UniformLocationMap[name];
+	}
+	int loc = glGetUniformLocation(m_BufferID, name.c_str());
+	if (loc == -1)
+	{
+		std::cout << "\033[41m\033[30mERROR::Shader\033[0m Failed to locate uniform '"
+			<< name << "' in shader program." << std::endl;
+	}
+	m_UniformLocationMap[name] = loc;
+	return loc;
 }
