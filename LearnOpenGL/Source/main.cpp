@@ -9,14 +9,15 @@ class Test : public Application
 {
 public:
 	unsigned int VAO{ 0 }, VBO{ 0 };
-	Shader shader;
-	float clearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+	float clearColor[3]{ 0.0f, 0.0f, 0.0f };
+	float myColor[3]{ 1.0f, 1.0f, 1.0f };
+	Shader* shaderPtr = nullptr;
 	Test()
 	{
 		float vertices[] = {
 			0.0f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f,
-			0.5f, -.5f, 0.0f, 1.0f, 1.0f, 0.0f,
-			-.5f, -.5f, 0.0f, 1.0f, 1.0f, 1.0f,
+			0.5f, -.5f, 0.0f, 0.0f, 1.0f, 0.0f,
+			-.5f, -.5f, 0.0f, 0.0f, 0.0f, 1.0f,
 		};
 		glGenVertexArrays(1, &VAO);
 		glBindVertexArray(VAO);
@@ -27,11 +28,7 @@ public:
 		glEnableVertexAttribArray(0);
 		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
 		glEnableVertexAttribArray(1);
-		shader = Shader(
-			"Resource/Shader/basic_colored_shader.vert",
-			"Resource/Shader/basic_colored_shader.frag"
-		);
-		shader.Bind();
+		shaderPtr = new Shader("Resource/Shader/basic_colored_shader.vert", "Resource/Shader/basic_colored_shader.frag");
 	}
 	~Test()
 	{
@@ -42,17 +39,20 @@ public:
 	{
 		if (Window::IsKeyPressed(KeyCode::Key_Escape))
 			Window::Close();
-		glClearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
+		glClearColor(clearColor[0], clearColor[1], clearColor[2], 1.0f);
 	}
 	void OnRender() override
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
+		shaderPtr->Bind();
+		shaderPtr->SetVec3("uColor", myColor[0], myColor[1], myColor[2]);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 	}
 	void OnRenderImGui() override
 	{
 		ImGui::Begin("Color Picker");
-		ImGui::ColorEdit4("Background Color", clearColor);
+		ImGui::ColorEdit3("Background Color", clearColor);
+		ImGui::ColorPicker3("Shape Color", myColor);
 		ImGui::End();
 	}
 };
