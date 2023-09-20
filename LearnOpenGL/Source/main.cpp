@@ -12,6 +12,7 @@ public:
 	float clearColor[3]{ 0.0f, 0.0f, 0.0f };
 	float myColor[3]{ 1.0f, 1.0f, 1.0f };
 	Shader* shaderPtr = nullptr;
+	bool editMode = false;
 	Test()
 	{
 		float vertices[] = {
@@ -34,11 +35,14 @@ public:
 	{
 		glDeleteVertexArrays(1, &VAO);
 		glDeleteBuffers(1, &VBO);
+		delete shaderPtr;
 	}
 	void OnUpdate(float deltaTime) override
 	{
-		if (Window::IsKeyPressed(KeyCode::Key_Escape))
+		if (Window::IsKeyPressed(Key_Escape))
 			Window::Close();
+		if (Window::IsKeyPressed(Key_F))
+			editMode = true;
 		glClearColor(clearColor[0], clearColor[1], clearColor[2], 1.0f);
 	}
 	void OnRender() override
@@ -50,10 +54,13 @@ public:
 	}
 	void OnRenderImGui() override
 	{
-		ImGui::Begin("Color Picker");
-		ImGui::ColorEdit3("Background Color", clearColor);
-		ImGui::ColorPicker3("Shape Color", myColor);
-		ImGui::End();
+		if (editMode)
+		{
+			ImGui::Begin("Edit Window", &editMode);
+			ImGui::ColorPicker3("Background Color", clearColor);
+			ImGui::ColorPicker3("Shape Color", myColor);
+			ImGui::End();
+		}
 	}
 };
 

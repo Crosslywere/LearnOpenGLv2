@@ -16,16 +16,27 @@ public:
 /**
  * @brief The set of keys used by the window
  */
-enum class KeyCode
+enum KeyCode
 {
 	Key_Escape = 0,
 	Key_W,
 	Key_S,
 	Key_A,
 	Key_D,
+	Key_F,
 	Key_Space,
 	Key_LControl,
-	Key_F,
+	Key_Max
+};
+
+enum ButtonCode
+{
+	Button_Left = 0,
+	Button_Right,
+	Button_Middle,
+	Button_Forward,
+	Button_Backward,
+	Button_Max
 };
 
 /**
@@ -37,6 +48,8 @@ struct WindowProps
 	int Height = 600;
 	const char* Title = "Default";
 	bool Resizable = true;
+	int MinWidth = 800;
+	int MinHeight = 600;
 };
 
 /**
@@ -78,16 +91,27 @@ public:
 	/**
 	 * @brief Checks if the key specified is pressed
 	 * 
-	 * @param keyCode A KeyCode enum class that represents each possible key
+	 * @param[in] keyCode A KeyCode enum class that represents each possible key
 	 * 
 	 * @return Returns true if the button specified is pressed and false otherwise
 	 */
 	static bool IsKeyPressed(const KeyCode& keyCode);
 	/**
+	 * @brief Checks if the key specified is held
+	 *
+	 * @param[in] keyCode The KeyCode enum to check
+	 */
+	static bool IsKeyHeld(const KeyCode& keyCode);
+	/**
 	 * @brief Sets the window to be closed
 	 */
 	static void Close();
-
+	/**
+	 * @brief Calls the Application's OnUpdate, OnRender and OnRenderImGui functions in a loop until
+	 * the window should be closed
+	 * 
+	 * @param[in] app A class that implements the Application interface
+	 */
 	static void Run(Application& app);
 private:
 	Window() = default;

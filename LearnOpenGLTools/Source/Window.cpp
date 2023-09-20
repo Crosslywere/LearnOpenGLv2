@@ -7,8 +7,20 @@
 #include <iostream>
 
 static GLFWwindow* window;
+
 static WindowProps winProps;
-static unsigned int winWidth, winHeight;
+
+static struct {
+	bool pressed = false;
+	bool repeated = false;
+} appKeys[Key_Max]{};
+
+static bool appButtons[Button_Max]{};
+
+static struct {
+	float xpos = 0.0f;
+	float ypos = 0.0f;
+} appCursorPos;
 
 static void ErrorCallback(int error, const char* description)
 {
@@ -18,9 +30,79 @@ static void ErrorCallback(int error, const char* description)
 static void FrameResizeCallback(GLFWwindow* window, int width, int height)
 {
 	ImGuiIO& io = ImGui::GetIO();
-	io.DisplaySize.x = width;
-	io.DisplaySize.y = height;
+	io.DisplaySize.x = winProps.Width = width;
+	io.DisplaySize.y = winProps.Height = height;
 	glViewport(0, 0, width, height);
+}
+
+static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+	unsigned int keyIndex;
+	switch (key)
+	{
+	case GLFW_KEY_ESCAPE:
+		keyIndex = Key_Escape;
+		break;
+	case GLFW_KEY_LEFT_CONTROL:
+		keyIndex = Key_LControl;
+		break;
+	case GLFW_KEY_SPACE:
+		keyIndex = Key_Space;
+		break;
+	case GLFW_KEY_A:
+		keyIndex = Key_A;
+		break;
+	case GLFW_KEY_W:
+		keyIndex = Key_W;
+		break;
+	case GLFW_KEY_S:
+		keyIndex = Key_S;
+		break;
+	case GLFW_KEY_D:
+		keyIndex = Key_D;
+		break;
+	case GLFW_KEY_F:
+		keyIndex = Key_F;
+		break;
+	default:
+		keyIndex = Key_Max;
+	}
+	if (keyIndex < Key_Max)
+	{
+		if (action == GLFW_PRESS)
+			appKeys[keyIndex] = { true, false };
+		else if (action == GLFW_REPEAT)
+			appKeys[keyIndex] = { false, true };
+		else if (action == GLFW_RELEASE)
+			appKeys[keyIndex] = { false, false };
+	}
+}
+
+static void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
+{
+	unsigned int buttonIndex;
+	switch (button)
+	{
+	case GLFW_MOUSE_BUTTON_LEFT:
+		buttonIndex = Button_Left;
+		break;
+	case GLFW_MOUSE_BUTTON_RIGHT:
+		buttonIndex = Button_Right;
+		break;
+	case GLFW_MOUSE_BUTTON_MIDDLE:
+		buttonIndex = Button_Middle;
+		break;
+	default:
+		buttonIndex = Button_Max;
+	}
+	if (buttonIndex < Button_Max)
+		appButtons[buttonIndex] = (action == GLFW_PRESS);
+}
+
+static void CursorPosCallback(GLFWwindow* window, double xpos, double ypos)
+{
+	appCursorPos.xpos = (float)xpos;
+	appCursorPos.ypos = (float)ypos;
 }
 
 bool Window::Create(const WindowProps& props)
@@ -46,7 +128,13 @@ bool Window::Create(const WindowProps& props)
 		std::cout << "\033[41m\033[30mERROR::Window\033[0m Failed to load OpenGL functions!" << std::endl;
 		return false;
 	}
+	// Setting window callbacks
 	glfwSetFramebufferSizeCallback(window, FrameResizeCallback);
+	glfwSetKeyCallback(window, KeyCallback);
+	glfwSetMouseButtonCallback(window, MouseButtonCallback);
+	glfwSetCursorPosCallback(window, CursorPosCallback);
+	// Other functions
+	glfwSetWindowSizeLimits(window, props.MinWidth, props.MinHeight, GLFW_DONT_CARE, GLFW_DONT_CARE);
 	// Printing the OpenGL version
 	std::cout << "\033[42m\033[30mINFO::Window\033[0m OpenGL version - " << glGetString(GL_VERSION) << std::endl;
 	// Setting vertical sync as enabled
@@ -117,27 +205,18 @@ void Window::Run(Application& app)
 
 bool Window::IsKeyPressed(const KeyCode& keyCode)
 {
-	switch (keyCode)
-	{
-	case KeyCode::Key_W:
-		return glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS;
-	case KeyCode::Key_S:
-		return glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS;
-	case KeyCode::Key_A:
-		return glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS;
-	case KeyCode::Key_D:
-		return glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS;
-	case KeyCode::Key_Space:
-		return glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS;
-	case KeyCode::Key_LControl:
-		return glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS;
-	case KeyCode::Key_Escape:
-		return glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS;
-	case KeyCode::Key_F:
-		return glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS;
-	default:
+	if (keyCode >= Key_Max || keyCode < 0)
 		return false;
-	}
+
+	return appKeys[keyCode].pressed;
+}
+
+bool Window::IsKeyHeld(const KeyCode& keyCode)
+{
+	if (keyCode >= Key_Max || keyCode < 0)
+		return false;
+
+	return appKeys[keyCode].repeated;
 }
 
 void Window::Close()
