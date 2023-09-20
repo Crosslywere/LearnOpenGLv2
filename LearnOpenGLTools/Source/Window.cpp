@@ -17,6 +17,9 @@ static void ErrorCallback(int error, const char* description)
 
 static void FrameResizeCallback(GLFWwindow* window, int width, int height)
 {
+	ImGuiIO& io = ImGui::GetIO();
+	io.DisplaySize.x = width;
+	io.DisplaySize.y = height;
 	glViewport(0, 0, width, height);
 }
 
@@ -29,7 +32,7 @@ bool Window::Create(const WindowProps& props)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+	glfwWindowHint(GLFW_RESIZABLE, props.Resizable);
 	const char* glsl_version = "#version 330 core";
 	window = glfwCreateWindow(props.Width, props.Height, props.Title, nullptr, nullptr);
 	if (!window)
@@ -130,6 +133,8 @@ bool Window::IsKeyPressed(const KeyCode& keyCode)
 		return glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS;
 	case KeyCode::Key_Escape:
 		return glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS;
+	case KeyCode::Key_F:
+		return glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS;
 	default:
 		return false;
 	}

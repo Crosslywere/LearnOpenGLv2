@@ -25,6 +25,7 @@ enum class KeyCode
 	Key_D,
 	Key_Space,
 	Key_LControl,
+	Key_F,
 };
 
 /**
@@ -35,6 +36,7 @@ struct WindowProps
 	int Width = 800;
 	int Height = 600;
 	const char* Title = "Default";
+	bool Resizable = true;
 };
 
 /**
