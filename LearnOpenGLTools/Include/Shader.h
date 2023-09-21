@@ -5,6 +5,7 @@
 #include <GPUBuffer.h>
 #include <string>
 #include <unordered_map>
+#include <glm/glm.hpp>
 
 class Shader : public GPUBuffer
 {
@@ -29,19 +30,33 @@ public:
 	/**
 	 * @brief Sets a uniform float value on the shader program
 	 * 
-	 * @param name The string variable name of the uniform
-	 * @param v0 The float to assign the variable
+	 * @param[in] name The string variable name of the uniform
+	 * @param[in] v0 The float to assign the variable
 	 */
-	void SetFloat(const std::string& name, float v0);
+	void SetUniform(const std::string& name, float v0);
+	/**
+	 * @brief Sets a uniform int value on the shader program
+	 * 
+	 * @param[in] name The string variable name of the uniform
+	 * @param[in] v0 The integer to assign the variable
+	 */
+	void SetUniform(const std::string& name, int v0);
 	/**
 	 * @brief Sets a uniform vec3 value on the shader program
 	 * 
-	 * @param name The string variable name of the uniform
-	 * @param v0 The float value to assign to the x component of the vec3 uniform
-	 * @param v1 The float value to assign to the y component of the vec3 uniform
-	 * @param v2 The float value to assign to the z component of the vec3 uniform
+	 * @param[in] name The string variable name of the uniform
+	 * @param[in] v0 The float value to assign to the x component of the vec3 uniform
+	 * @param[in] v1 The float value to assign to the y component of the vec3 uniform
+	 * @param[in] v2 The float value to assign to the z component of the vec3 uniform
 	 */
-	void SetVec3(const std::string& name, float v0, float v1, float v2);
+	void SetUniform(const std::string& name, float v0, float v1, float v2);
+	/**
+	 * @brief Sets a uniform vec3 value on the shader program
+	 * 
+	 * @param[in] name The string variable name of the uniform
+	 * @param[in] v The vec3 data structure provided by glm
+	 */
+	void SetUniform(const std::string& name, const glm::vec3& v);
 private:
 	/**
 	 * @brief Retrives the uniforms location from the unordered map of uniform names and values. If

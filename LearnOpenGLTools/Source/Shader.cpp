@@ -86,14 +86,24 @@ void Shader::Unbind() const
 	glUseProgram(0);
 }
 
-void Shader::SetFloat(const std::string& name, float v0)
+void Shader::SetUniform(const std::string& name, float v0)
 {
 	glUniform1f(GetUniformLocation(name), v0);
 }
 
-void Shader::SetVec3(const std::string& name, float v0, float v1, float v2)
+void Shader::SetUniform(const std::string& name, int v0)
+{
+	glUniform1i(GetUniformLocation(name), v0);
+}
+
+void Shader::SetUniform(const std::string& name, float v0, float v1, float v2)
 {
 	glUniform3f(GetUniformLocation(name), v0, v1, v2);
+}
+
+void Shader::SetUniform(const std::string& name, const glm::vec3& v)
+{
+	glUniform3fv(GetUniformLocation(name), 1, &v[0]);
 }
 
 int Shader::GetUniformLocation(const std::string& name)
