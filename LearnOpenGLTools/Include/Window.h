@@ -48,8 +48,8 @@ struct WindowProps
 	int Height = 600;
 	const char* Title = "Default";
 	bool Resizable = true;
-	int MinWidth = 800;
-	int MinHeight = 600;
+	const int MinWidth = 800;
+	const int MinHeight = 600;
 };
 
 /**
@@ -113,6 +113,12 @@ public:
 	 * @param[in] app A class that implements the Application interface
 	 */
 	static void Run(Application& app);
+
+	static int GetWidth();
+
+	static int GetHeight();
+
+	static float GetAspectRatio();
 private:
 	Window() = default;
 };

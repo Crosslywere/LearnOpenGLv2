@@ -4,6 +4,7 @@
 #include <imgui.h>
 #include <iostream>
 #include <Shader.h>
+#include <glm/gtc/matrix_transform.hpp>
 
 class Test : public Application
 {
@@ -11,8 +12,10 @@ public:
 	unsigned int VAO{ 0 }, VBO{ 0 };
 	glm::vec3 clearColor = glm::vec3(0.0f);
 	glm::vec3 myColor = glm::vec3(1.0f);
-	Shader* shaderPtr = nullptr;
-	bool editMode = false;
+	Shader* shader;
+	bool editMode = true;
+	float zoom = 1.0f;
+	float scale = 100.0f;
 	Test()
 	{
 		float vertices[] = {
@@ -31,13 +34,13 @@ public:
 		glEnableVertexAttribArray(1);
 		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
 		glEnableVertexAttribArray(2);
-		shaderPtr = new Shader("Resource/Shader/basic_colored_shader.vert", "Resource/Shader/basic_colored_shader.frag");
+		shader = new Shader("Resource/Shader/basic_colored_shader.vert", "Resource/Shader/basic_colored_shader.frag");
 	}
 	~Test()
 	{
 		glDeleteVertexArrays(1, &VAO);
 		glDeleteBuffers(1, &VBO);
-		delete shaderPtr;
+		delete shader;
 	}
 	void OnUpdate(float deltaTime) override
 	{
@@ -49,9 +52,15 @@ public:
 	}
 	void OnRender() override
 	{
+		float ar = Window::GetAspectRatio();
+		float w = (ar * Window::GetWidth()) * zoom;
+		float h = (ar * Window::GetHeight()) * zoom;
+		glm::mat4 projection = glm::ortho(-w, w, -h, h);
+		glm::mat4 model = glm::scale(glm::mat4(1.0f), glm::vec3(scale));
 		glClear(GL_COLOR_BUFFER_BIT);
-		shaderPtr->Bind();
-		shaderPtr->SetUniform("uColor", myColor);
+		shader->Bind();
+		shader->SetUniform("uColor", myColor);
+		shader->SetUniform("uMVP", projection * model);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 	}
 	void OnRenderImGui() override
@@ -61,6 +70,8 @@ public:
 			ImGui::Begin("Edit Window", &editMode);
 			ImGui::ColorPicker3("Background Color", &clearColor[0]);
 			ImGui::ColorPicker3("Shape Color", &myColor[0]);
+			ImGui::SliderFloat("Zoom", &zoom, 1.0f, 0.001f);
+			ImGui::SliderFloat("Scale", &scale, 1.0f, 100.0f);
 			ImGui::End();
 		}
 	}

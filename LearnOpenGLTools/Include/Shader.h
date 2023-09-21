@@ -57,6 +57,13 @@ public:
 	 * @param[in] v The vec3 data structure provided by glm
 	 */
 	void SetUniform(const std::string& name, const glm::vec3& v);
+	/**
+	 * @brief Sets a uniform mat4 value on the shader program
+	 * 
+	 * @param[in] name The string variable name of the uniform
+	 * @param[in] m The mat4 data structure provided by glm
+	 */
+	void SetUniform(const std::string& name, const glm::mat4& m);
 private:
 	/**
 	 * @brief Retrives the uniforms location from the unordered map of uniform names and values. If

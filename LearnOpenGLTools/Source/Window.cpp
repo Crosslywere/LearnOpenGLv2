@@ -107,7 +107,10 @@ static void CursorPosCallback(GLFWwindow* window, double xpos, double ypos)
 
 bool Window::Create(const WindowProps& props)
 {
-	winProps = props;
+	winProps.Width = props.Width;
+	winProps.Height = props.Height;
+	winProps.Title = props.Title;
+	//winProps.Resizable = props.Resizable; // Ignoring the resizable variable
 	glfwSetErrorCallback(ErrorCallback);
 	glfwInit();
 	// Setting OpenGL to #version 330 core
@@ -201,6 +204,21 @@ void Window::Run(Application& app)
 		app.OnRenderImGui();
 		Render();
 	}
+}
+
+int Window::GetWidth()
+{
+	return winProps.Width;
+}
+
+int Window::GetHeight()
+{
+	return winProps.Height;
+}
+
+float Window::GetAspectRatio()
+{
+	return (float)winProps.Width / (float)winProps.Height;
 }
 
 bool Window::IsKeyPressed(const KeyCode& keyCode)
