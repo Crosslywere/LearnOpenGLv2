@@ -78,6 +78,7 @@ public:
 		delete vao;
 		delete vbo;
 		delete shader;
+		delete texture;
 	}
 	void OnUpdate(float dt) override
 	{
