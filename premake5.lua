@@ -6,6 +6,7 @@ configurations { "Debug", "Release" }
 include "Vendor/glad"
 include "Vendor/GLFW"
 include "Vendor/imgui"
+include "Vendor/stb"
 include "LearnOpenGLTools"
 
 -- Projects (Executables)
