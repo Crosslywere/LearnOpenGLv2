@@ -2,6 +2,6 @@
 #ifndef LIGHTING_H
 #define LIGHTING_H
 
-#include "BasicLighting.h"
+#include "Lighting/BasicLighting.h"
 
 #endif
