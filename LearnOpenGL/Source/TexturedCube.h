@@ -1,6 +1,6 @@
 #pragma once
-#ifndef CUBE_H
-#define CUBE_H
+#ifndef TEXTURED_CUBE_H
+#define TEXTURED_CUBE_H
 
 #include <Window.h>
 #include <Shader.h>
