@@ -10,6 +10,8 @@ static GLFWwindow* window;
 
 static WindowProps winProps;
 
+static bool winFocused = true;
+
 static struct {
 	bool pressed = false;
 	bool repeated = false;
@@ -18,8 +20,8 @@ static struct {
 static bool appButtons[Button_Max]{};
 
 static struct {
-	float xpos = 0.0f;
-	float ypos = 0.0f;
+	double xpos = 0.0f;
+	double ypos = 0.0f;
 } appCursorPos;
 
 static void ErrorCallback(int error, const char* description)
@@ -101,8 +103,13 @@ static void MouseButtonCallback(GLFWwindow* window, int button, int action, int 
 
 static void CursorPosCallback(GLFWwindow* window, double xpos, double ypos)
 {
-	appCursorPos.xpos = (float)xpos;
-	appCursorPos.ypos = (float)ypos;
+	appCursorPos.xpos = xpos;
+	appCursorPos.ypos = ypos;
+}
+
+static void WindowFocusCallback(GLFWwindow* window, int focused)
+{
+	winFocused = (bool)focused;
 }
 
 bool Window::Create(const WindowProps& props)
@@ -136,6 +143,7 @@ bool Window::Create(const WindowProps& props)
 	glfwSetKeyCallback(window, KeyCallback);
 	glfwSetMouseButtonCallback(window, MouseButtonCallback);
 	glfwSetCursorPosCallback(window, CursorPosCallback);
+	glfwSetWindowFocusCallback(window, WindowFocusCallback);
 	// Other functions
 	glfwSetWindowSizeLimits(window, props.MinWidth, props.MinHeight, GLFW_DONT_CARE, GLFW_DONT_CARE);
 	// Printing the OpenGL version
@@ -145,7 +153,7 @@ bool Window::Create(const WindowProps& props)
 	// Setting up Dear ImGui
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO();
-	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+	io.ConfigFlags = ImGuiConfigFlags_NavEnableKeyboard;
 
 	// Setting the color style
 	ImGui::StyleColorsDark();
@@ -198,11 +206,14 @@ void Window::Run(Application& app)
 		float delta = now - past;
 		past = now;
 		Poll();
-		app.OnUpdate(delta);
-		app.OnRender();
-		ImGui::NewFrame();
-		app.OnRenderImGui();
-		Render();
+		if (winFocused)
+		{
+			app.OnUpdate(delta);
+			app.OnRender();
+			ImGui::NewFrame();
+			app.OnRenderImGui();
+			Render();
+		}
 	}
 }
 
@@ -214,6 +225,16 @@ int Window::GetWidth()
 int Window::GetHeight()
 {
 	return winProps.Height;
+}
+
+float Window::GetMouseXPos()
+{
+	return (float)appCursorPos.xpos;
+}
+
+float Window::GetMouseYPos()
+{
+	return (float)appCursorPos.ypos;
 }
 
 float Window::GetAspectRatio()
@@ -240,4 +261,29 @@ bool Window::IsKeyHeld(const KeyCode& keyCode)
 void Window::Close()
 {
 	glfwSetWindowShouldClose(window, GLFW_TRUE);
+}
+
+bool Window::IsButtonPressed(const ButtonCode& buttonCode)
+{
+	if (buttonCode >= Button_Max || buttonCode < 0)
+		return false;
+
+	return appButtons[buttonCode];
+}
+
+void Window::SetMouseMode(const MouseMode& mode)
+{
+	ImGuiIO& io = ImGui::GetIO();
+	switch (mode)
+	{
+	default:
+	case MouseMode::Mouse_Disabled:
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		io.ConfigFlags |= ImGuiConfigFlags_NoMouse;
+		break;
+	case MouseMode::Mouse_Normal:
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		io.ConfigFlags = ImGuiConfigFlags_NavEnableKeyboard;
+		break;
+	}
 }

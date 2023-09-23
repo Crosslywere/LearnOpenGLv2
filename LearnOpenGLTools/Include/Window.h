@@ -39,6 +39,12 @@ enum ButtonCode
 	Button_Max
 };
 
+enum class MouseMode
+{
+	Mouse_Normal,
+	Mouse_Disabled,
+};
+
 /**
  * @brief A struct used to define the properties of a window
  */
@@ -93,15 +99,31 @@ public:
 	 * 
 	 * @param[in] keyCode A KeyCode enum class that represents each possible key
 	 * 
-	 * @return Returns true if the button specified is pressed and false otherwise
+	 * @return Returns true if the key specified is pressed and false otherwise
 	 */
 	static bool IsKeyPressed(const KeyCode& keyCode);
 	/**
 	 * @brief Checks if the key specified is held
 	 *
 	 * @param[in] keyCode The KeyCode enum to check
+	 * 
+	 * @return Returns true if the key specified is held and false otherwise
 	 */
 	static bool IsKeyHeld(const KeyCode& keyCode);
+	/**
+	 * @brief Checks if the button specified is pressed
+	 * 
+	 * @param[in] buttonCode A ButtonCode enum to check
+	 * 
+	 * @return Returns true if the button specified is pressed and false otherwise
+	 */
+	static bool IsButtonPressed(const ButtonCode& buttonCode);
+
+	static float GetMouseXPos();
+
+	static float GetMouseYPos();
+
+	static void SetMouseMode(const MouseMode& mode);
 	/**
 	 * @brief Sets the window to be closed
 	 */
