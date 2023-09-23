@@ -11,7 +11,7 @@ This project uses the [premake5](https://premake.github.io) build system.
 1. **Textured Cube** Created a textured cube by defining vertices with 3D position and texture coordinates.
     The vertex data is sent to the GPU via a vertex buffer object. The vertices are then used on the shader.
 
-    The shader has a uniform for the model-view-projection matrix `uniform mat4 uMVP` that multiplies the position data
+    The shader has a uniform for the model-view-projection matrix that multiplies the position data
     in order to transform these coordinates into a normalized device coordinate system relative to the view's frustrum/clip space.
 
     The texture is applied using the texture coordinates using a sampler2D on the fragment shader of the shader program.
@@ -31,7 +31,7 @@ This project uses the [premake5](https://premake.github.io) build system.
         ```
 
         Diffuse light is the direct light from the light source(s) of a scene. To calculate the diffuse you'd have to
-        calculate the light's direction, the normalized the light's position minus the fragment's position.
+        calculate the light's direction which is the normalized result of the light's position minus the fragment's position.
         Then the dot product of light's direction and the normal gives the amount of light that hits that fragment
         (this is within a range of -1 to 1 so should be clamped from 0 to 1). This value is can then be multiplied by the diffuse color
         and the light color to give the resulting fragment color.
