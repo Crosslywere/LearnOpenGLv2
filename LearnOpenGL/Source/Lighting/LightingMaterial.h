@@ -84,10 +84,6 @@ public:
 		delete objectSpecular;
 	}
 
-	void OnCreate() override
-	{
-	}
-
 	void OnUpdate(float dt) override
 	{
 		static float mouseX = Window::GetMouseXPos();
