@@ -5,7 +5,9 @@
 int main(void)
 {
 	if (Window::Create())
-		Window::Run(BasicLighting());
+	{
+		Window::Run(LightingMaterial());
+	}
 	Window::Terminate();
 	return 0;
 }

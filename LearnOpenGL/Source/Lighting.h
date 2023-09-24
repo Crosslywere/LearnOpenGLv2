@@ -3,5 +3,6 @@
 #define LIGHTING_H
 
 #include "Lighting/BasicLighting.h"
+#include "Lighting/LightingMaterial.h"
 
 #endif
