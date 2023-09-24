@@ -86,7 +86,6 @@ public:
 
 	void OnCreate() override
 	{
-		LightingMaterial();
 	}
 
 	void OnUpdate(float dt) override
