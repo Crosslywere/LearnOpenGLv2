@@ -15,6 +15,7 @@ public:
 	inline const unsigned int& GetWidth() const { return m_Width; }
 	inline const unsigned int& GetHeight() const { return m_Height; }
 	inline void SetSlot(unsigned int slot) { m_Slot = slot; }
+	inline const int& GetSlot() const { return m_Slot; }
 private:
 	unsigned int m_Slot{ 0 };
 	unsigned int m_Width, m_Height;
