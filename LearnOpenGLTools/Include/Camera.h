@@ -15,16 +15,15 @@ public:
 	inline const glm::vec3& GetPosition() const { return m_Position; }
 	inline void SetPosition(const glm::vec3& position) { m_Position = position; }
 	inline float GetPitch() const { return m_Pitch; }
-	inline void SetPitch(float pitch) { m_Pitch = pitch; UpdateOrientation(); }
-	inline float GetYaw() const { return m_Yaw; }
-	inline void SetYaw(float yaw, bool clamp = true)
+	inline void SetPitch(float pitch, bool clamp = true)
 	{
-		m_Yaw = yaw;
+		m_Pitch = pitch;
 		if (clamp)
-			glm::clamp(m_Yaw, -89.0f, 89.0f);
-
+			m_Pitch = glm::clamp(m_Pitch, -89.0f, 89.0f);
 		UpdateOrientation();
 	}
+	inline float GetYaw() const { return m_Yaw; }
+	inline void SetYaw(float yaw) { m_Yaw = yaw; UpdateOrientation(); }
 	inline const glm::vec3& GetFront() const { return m_Front; }
 	inline const glm::vec3& GetRight() const { return m_Right; }
 	inline const glm::vec3& GetUp() const { return m_Up; }
