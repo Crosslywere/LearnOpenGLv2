@@ -6,7 +6,7 @@ int main(void)
 {
 	if (Window::Create())
 	{
-		Window::Run(LightingMaterial());
+		Window::Run(PointLight());
 	}
 	Window::Terminate();
 	return 0;

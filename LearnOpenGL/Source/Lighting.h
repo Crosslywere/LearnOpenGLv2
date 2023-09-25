@@ -4,5 +4,6 @@
 
 #include "Lighting/BasicLighting.h"
 #include "Lighting/LightingMaterial.h"
+#include "Lighting/PointLight.h"
 
 #endif
