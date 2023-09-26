@@ -8,7 +8,7 @@ class Texture : GPUBuffer
 {
 public:
 	Texture() = default;
-	Texture(const char* texturePath, bool pixelated = false);
+	Texture(const char* texturePath, unsigned int slot = 0, bool pixelated = false);
 	~Texture() override;
 	void Bind() const override;
 	void Unbind() const override;

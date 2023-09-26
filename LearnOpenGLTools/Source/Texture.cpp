@@ -3,7 +3,8 @@
 #include <stb_image.h>
 #include <iostream>
 
-Texture::Texture(const char* texturePath, bool pixelated)
+Texture::Texture(const char* texturePath, unsigned int slot, bool pixelated)
+	: m_Slot(slot)
 {
 	int bpc;
 	unsigned char* data = stbi_load(texturePath, (int*)&m_Width, (int*)&m_Height, &bpc, 0);
