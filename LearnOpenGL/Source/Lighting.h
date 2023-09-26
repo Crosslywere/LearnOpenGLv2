@@ -6,5 +6,6 @@
 #include "Lighting/LightingMaterial.h"
 #include "Lighting/PointLight.h"
 #include "Lighting/SpotLight.h"
+#include "Lighting/MultiLight.h"
 
 #endif

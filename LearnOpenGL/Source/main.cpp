@@ -6,7 +6,7 @@ int main(void)
 {
 	if (Window::Create())
 	{
-		Window::Run(SpotLight());
+		Window::Run(MultiLight());
 	}
 	Window::Terminate();
 	return 0;
