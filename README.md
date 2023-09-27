@@ -164,3 +164,18 @@ This project uses the [premake5](https://premake.github.io) build system.
         ```
 
         With this the light will only cast a circle.
+
+        But this isn't enough to simulate the light. To make it more like a spot/flash light its intensity would have to be reduced the farther away from the inner cutoff it goes.
+        The intensity reduction is achieved by the following calculation:
+
+        ```glsl
+        float epsilon = light.innerCutoff - light.outerCutoff;
+        float intensity = clamp((theta - light.innerCutoff) / epsilon, 0.0, 1.0);
+        ```
+
+        This intensity can then be multiplied by the final result to get the final fragment color.
+
+    - **Multiple Light Sources** This simply combines all other lighting models ie. Spot, Point and Directional lights.
+        All the lights in the scene are calculated for each surface.
+        The light sources are then attenuated based on their position and strength (quadratic and linear values) except for the directional light which has a global presense. There are a total of 6 light sources. That is 1 directional light, 4 point lights, and 1 spot light.
+        The spot light is tied to the camera's position and front direction so it acts as a flash light.
