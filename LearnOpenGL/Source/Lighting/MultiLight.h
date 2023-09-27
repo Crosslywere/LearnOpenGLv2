@@ -202,7 +202,54 @@ public:
 	void OnRenderImGui() override
 	{
 		ImGui::Begin("Edit Window");
+		ImGui::ColorEdit3("Background Color", &clearColor[0]);
+		ImGui::End();
+		
+		ImGui::Begin("Directional Light");
+		ImGui::ColorEdit3("Light Diffuse Color", &directionalLight.diffuse[0]);
+		ImGui::SliderFloat("Ambient Strength", &directionalLight.ambientAmt, 0.0f, 1.0f);
+		ImGui::SliderFloat("Specular Strength", &directionalLight.specularAmt, 0.0f, 1.0f);
+		ImGui::End();
 
+		// Don't understand how to use Dear ImGui yet so this is my solution
+		ImGui::Begin("Point Lights 1");
+		ImGui::ColorEdit3("Light Diffuse Color", &pointLights[0].diffuse[0]);
+		ImGui::SliderFloat("Ambient Strenght", &(pointLights[0].ambientAmt), 0.0f, 1.0f);
+		ImGui::SliderFloat("Specular Strenght", &(pointLights[0].specularAmt), 0.0f, 1.0f);
+		ImGui::InputFloat("Linear", &(pointLights[0].linear));
+		ImGui::InputFloat("Quadratic", &(pointLights[0].quadratic));
+		ImGui::End();
+
+		ImGui::Begin("Point Lights 2");
+		ImGui::ColorEdit3("Light Diffuse Color", &pointLights[1].diffuse[0]);
+		ImGui::SliderFloat("Ambient Strenght", &(pointLights[1].ambientAmt), 0.0f, 1.0f);
+		ImGui::SliderFloat("Specular Strenght", &(pointLights[1].specularAmt), 0.0f, 1.0f);
+		ImGui::InputFloat("Linear", &(pointLights[1].linear));
+		ImGui::InputFloat("Quadratic", &(pointLights[1].quadratic));
+		ImGui::End();
+
+		ImGui::Begin("Point Lights 3");
+		ImGui::ColorEdit3("Light Diffuse Color", &pointLights[2].diffuse[0]);
+		ImGui::SliderFloat("Ambient Strenght", &(pointLights[2].ambientAmt), 0.0f, 1.0f);
+		ImGui::SliderFloat("Specular Strenght", &(pointLights[2].specularAmt), 0.0f, 1.0f);
+		ImGui::InputFloat("Linear", &(pointLights[2].linear));
+		ImGui::InputFloat("Quadratic", &(pointLights[2].quadratic));
+		ImGui::End();
+
+		ImGui::Begin("Point Lights 4");
+		ImGui::ColorEdit3("Light Diffuse Color", &pointLights[3].diffuse[0]);
+		ImGui::SliderFloat("Ambient Strenght", &(pointLights[3].ambientAmt), 0.0f, 1.0f);
+		ImGui::SliderFloat("Specular Strenght", &(pointLights[3].specularAmt), 0.0f, 1.0f);
+		ImGui::InputFloat("Linear", &(pointLights[3].linear));
+		ImGui::InputFloat("Quadratic", &(pointLights[3].quadratic));
+		ImGui::End();
+
+		ImGui::Begin("Spot Light");
+		ImGui::ColorEdit3("Light Diffuse Color", &spotLight.diffuse[0]);
+		ImGui::SliderFloat("Ambient Strength", &spotLight.ambientAmt, 0.0f, 1.0f);
+		ImGui::SliderFloat("Specular Strength", &spotLight.specularAmt, 0.0f, 1.0f);
+		ImGui::SliderFloat("Inner Angle", &spotLight.innerAngle, 0.0f, 90.0f);
+		ImGui::SliderFloat("Outer Angle", &spotLight.outerAngle, spotLight.innerAngle, 90.0f);
 		ImGui::End();
 	}
 private:
@@ -256,8 +303,8 @@ private:
 		float linear = 0.07f;
 		float quadratic = 0.017f;
 
-		float innerAngle = 15.0f;
-		float outerAngle = 25.0f;
+		float innerAngle = 25.0f;
+		float outerAngle = 35.0f;
 	} spotLight;
 };
 

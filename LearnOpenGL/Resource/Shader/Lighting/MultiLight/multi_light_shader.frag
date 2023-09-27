@@ -117,7 +117,6 @@ vec3 calculateSpotLight(in SpotLight light, in vec3 normal, in float shininess)
 
 		return intensity * attenuation * (ambient + diffuse + specular);
 	}
-
 	return vec3(0.0);
 }
 
