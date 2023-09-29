@@ -1,6 +1,7 @@
 #include <Window.h>
 #include "TexturedCube.h"
 #include "Lighting.h"
+#include "FrameBuffer.h"
 
 int main(void)
 {

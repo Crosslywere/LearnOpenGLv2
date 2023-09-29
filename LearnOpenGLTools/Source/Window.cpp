@@ -4,11 +4,23 @@
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
 #include <GLFW/glfw3.h>
+#include <Framebuffer.h>
+#include <VertexArray.h>
+#include <VertexBuffer.h>
+#include <VertexBufferLayout.h>
 #include <iostream>
 
 static GLFWwindow* window;
 
 static WindowProps winProps;
+
+static Framebuffer* winFramebuffer;
+
+static VertexArray* winScreenVAO;
+
+static VertexBuffer* winScreenVBO;
+
+static unsigned int winScreenShaderID;
 
 static bool winFocused = true;
 
@@ -35,6 +47,8 @@ static void FrameResizeCallback(GLFWwindow* window, int width, int height)
 	io.DisplaySize.x = winProps.Width = width;
 	io.DisplaySize.y = winProps.Height = height;
 	glViewport(0, 0, width, height);
+	delete winFramebuffer;
+	winFramebuffer = new Framebuffer(width, height);
 }
 
 static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -165,11 +179,64 @@ bool Window::Create(const WindowProps& props)
 	ImGui_ImplGlfw_NewFrame();
 	ImGui_ImplOpenGL3_NewFrame();
 
+	float screenVerts[] = {
+		-1.0f, -1.0f,   0.0f, 0.0f,
+		 1.0f, -1.0f,   1.0f, 0.0f,
+		 1.0f,  1.0f,   1.0f, 1.0f,
+
+		 1.0f,  1.0f,   1.0f, 1.0f,
+		-1.0f,  1.0f,   0.0f, 1.0f,
+		-1.0f, -1.0f,   0.0f, 0.0f,
+	};
+	winScreenVAO = new VertexArray();
+	winScreenVAO->Bind();
+	winScreenVBO = new VertexBuffer(screenVerts, sizeof(screenVerts));
+	winScreenVBO->Bind();
+	VertexBufferLayout()
+		.Push<float>(2)
+		.Push<float>(2)
+	.Enable();
+	winFramebuffer = new Framebuffer(props.Width, props.Height);
+	const char* screenVertSrc =
+		R"(#version 330 core
+		layout (location = 0) in vec2 aPos;
+		layout (location = 1) in vec2 aTexCoords;
+		out vec2 TexCoords;
+		void main()
+		{
+			gl_Position = vec4(aPos, 0.0, 1.0);
+		})";
+	const char* screenFragSrc =
+		R"(#version 330 core
+		in vec2 TexCoords;
+		uniform sampler2D uTexture;
+		void main()
+		{
+			gl_FragColor = texture(uTexture, TexCoords);
+		})";
+	unsigned int vs = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(vs, 1, &screenVertSrc, nullptr);
+	glCompileShader(vs);
+	unsigned int fs = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(fs, 1, &screenFragSrc, nullptr);
+	glCompileShader(fs);
+	winScreenShaderID = glCreateProgram();
+	glAttachShader(winScreenShaderID, vs);
+	glAttachShader(winScreenShaderID, fs);
+	glLinkProgram(winScreenShaderID);
+	glDeleteShader(vs);
+	glDeleteShader(fs);
+	glUseProgram(winScreenShaderID);
+	glUniform1i(glGetUniformLocation(winScreenShaderID, "uTexture"), 0);
 	return true;
 }
 
 void Window::Terminate()
 {
+	delete winScreenVAO;
+	delete winScreenVBO;
+	delete winFramebuffer;
+	glDeleteProgram(winScreenShaderID);
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
@@ -208,11 +275,22 @@ void Window::Run(Application& app)
 		Poll();
 		if (winFocused)
 		{
+			glEnable(GL_DEPTH_TEST);
+
+			winFramebuffer->Bind();
 			app.OnUpdate(delta);
 			app.OnRender();
 			ImGui::NewFrame();
 			app.OnRenderImGui();
 			Render();
+			glDisable(GL_DEPTH_TEST);
+			glUseProgram(winScreenShaderID);
+			winFramebuffer->PrepDraw();
+			glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+			glClear(GL_COLOR_BUFFER_BIT);
+			winScreenVAO->Bind();
+			glDrawArrays(GL_TRIANGLES, 0, 6);
+			winScreenVAO->Unbind();
 		}
 	}
 }

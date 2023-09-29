@@ -25,6 +25,17 @@ Texture::Texture(const char* texturePath, unsigned int slot, bool pixelated)
 	stbi_image_free(data);
 }
 
+Texture::Texture(unsigned int width, unsigned int height, unsigned int slot, bool pixelated)
+	:m_Width{ width }, m_Height{ height }
+{
+	glGenTextures(1, &m_BufferID);
+	glBindTexture(GL_TEXTURE_2D, m_BufferID);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, pixelated ? GL_NEAREST : GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, pixelated ? GL_NEAREST : GL_LINEAR);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, m_Width, m_Height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
 Texture::~Texture()
 {
 	glDeleteTextures(1, &m_BufferID);
