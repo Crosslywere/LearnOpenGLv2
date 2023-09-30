@@ -5,9 +5,9 @@
 int main(void)
 {
 	if (Window::Create())
-	{
+    {
 		Window::Run(MultiLight());
-	}
+    }
 	Window::Terminate();
-	return 0;
+    return 0;
 }

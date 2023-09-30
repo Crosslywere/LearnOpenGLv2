@@ -137,6 +137,7 @@ public:
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glm::mat4 projection = glm::perspective(glm::radians(camera.FOV), Window::GetAspectRatio(), 0.1f, 100.0f);
 		glm::mat4 view = camera.GetViewMatrix();
+		vao->Bind();
 		objectShader->Bind();
 		objectShader->SetUniform("uProjection", projection);
 		objectShader->SetUniform("uView", view);
