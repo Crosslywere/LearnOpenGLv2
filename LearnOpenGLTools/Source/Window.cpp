@@ -4,6 +4,7 @@
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
 #include <GLFW/glfw3.h>
+#include <Shader.h>
 #include <iostream>
 
 static GLFWwindow* window;
@@ -11,6 +12,12 @@ static GLFWwindow* window;
 static WindowProps winProps;
 
 static bool winFocused = true;
+
+static unsigned int quadVAO, quadVBO;
+
+static unsigned int winFramebuffer;
+static unsigned int winTextureColorbuffer;
+static unsigned int winRenderbuffer;
 
 static struct {
 	bool pressed = false;
@@ -165,6 +172,43 @@ bool Window::Create(const WindowProps& props)
 	ImGui_ImplGlfw_NewFrame();
 	ImGui_ImplOpenGL3_NewFrame();
 
+	float quadVertices[] = {
+		-1.0f,  1.0f,  0.0f, 1.0f,
+		-1.0f, -1.0f,  0.0f, 0.0f,
+		 1.0f, -1.0f,  1.0f, 0.0f,
+
+		-1.0f,  1.0f,  0.0f, 1.0f,
+		 1.0f, -1.0f,  1.0f, 0.0f,
+		 1.0f,  1.0f,  1.0f, 1.0f
+	};
+	glGenVertexArrays(1, &quadVAO);
+	glGenBuffers(1, &quadVBO);
+	glBindVertexArray(quadVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+
+	glGenFramebuffers(1, &winFramebuffer);
+	glBindFramebuffer(GL_FRAMEBUFFER, winFramebuffer);
+
+	glGenTextures(1, &winTextureColorbuffer);
+	glBindTexture(GL_TEXTURE_2D, winTextureColorbuffer);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, winProps.Width, winProps.Height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, winTextureColorbuffer, 0);
+
+	glGenRenderbuffers(1, &winRenderbuffer);
+	glBindRenderbuffer(GL_RENDERBUFFER, winRenderbuffer);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, winProps.Width, winProps.Height);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, winRenderbuffer); 
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+		std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
 	return true;
 }
 
@@ -173,6 +217,11 @@ void Window::Terminate()
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
+	glDeleteBuffers(1, &quadVBO);
+	glDeleteVertexArrays(1, &quadVAO);
+	glDeleteFramebuffers(1, &winFramebuffer);
+	glDeleteTextures(1, &winTextureColorbuffer);
+	glDeleteRenderbuffers(1, &winRenderbuffer);
 	glfwTerminate();
 }
 
@@ -188,8 +237,6 @@ void Window::Render()
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	// Swapping the buffer
 	glfwSwapBuffers(window);
-	// Polling the event
-	glfwPollEvents();
 }
 
 void Window::Poll()
@@ -200,20 +247,34 @@ void Window::Poll()
 void Window::Run(Application& app)
 {
 	float past = 0.0f;
+	Shader screenShader("Resource/Shader/Framebuffer/framebuffers_screen.vert", "Resource/Shader/Framebuffer/framebuffers_screen.frag");
+	screenShader.Bind();
 	while (IsRunning())
 	{
 		float now = (float)glfwGetTime();
 		float delta = now - past;
 		past = now;
-		Poll();
 		if (winFocused)
 		{
+			glBindFramebuffer(GL_FRAMEBUFFER, winFramebuffer);
+			glEnable(GL_DEPTH_TEST);
 			app.OnUpdate(delta);
 			app.OnRender();
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
+			glDisable(GL_DEPTH_TEST);
+			glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+			glClear(GL_COLOR_BUFFER_BIT);
+			screenShader.Bind();
+			glBindVertexArray(quadVAO);
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, winTextureColorbuffer);
+			screenShader.SetUniform("uScreenTexture", 0);
+			glDrawArrays(GL_TRIANGLES, 0, 6);
 			ImGui::NewFrame();
 			app.OnRenderImGui();
 			Render();
 		}
+		Poll();
 	}
 }
 
