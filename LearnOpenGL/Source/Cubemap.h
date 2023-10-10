@@ -21,59 +21,62 @@ public:
 	Cubemap()
 	{
 		float vertices[] = {
-			-.5f, 0.5f, 0.5f,  0.0f, 1.0f,
-			-.5f, -.5f, 0.5f,  0.0f, 0.0f,
-			0.5f, -.5f, 0.5f,  1.0f, 0.0f,
-			0.5f, -.5f, 0.5f,  1.0f, 0.0f,
-			0.5f, 0.5f, 0.5f,  1.0f, 1.0f,
-			-.5f, 0.5f, 0.5f,  0.0f, 1.0f,
-		
-			-.5f, 0.5f, -.5f,  0.0f, 0.0f,
-			-.5f, -.5f, -.5f,  0.0f, 1.0f,
-			0.5f, -.5f, -.5f,  1.0f, 1.0f,
-			0.5f, -.5f, -.5f,  1.0f, 1.0f,
-			0.5f, 0.5f, -.5f,  1.0f, 0.0f,
-			-.5f, 0.5f, -.5f,  0.0f, 0.0f,
-		
-			-.5f, 0.5f, -.5f,  0.0f, 1.0f,
-			-.5f, -.5f, -.5f,  0.0f, 0.0f,
-			-.5f, -.5f, 0.5f,  1.0f, 0.0f,
-			-.5f, -.5f, 0.5f,  1.0f, 0.0f,
-			-.5f, 0.5f, 0.5f,  1.0f, 1.0f,
-			-.5f, 0.5f, -.5f,  0.0f, 1.0f,
-		
-			0.5f, 0.5f, -.5f,  0.0f, 0.0f,
-			0.5f, -.5f, -.5f,  0.0f, 1.0f,
-			0.5f, -.5f, 0.5f,  1.0f, 1.0f,
-			0.5f, -.5f, 0.5f,  1.0f, 1.0f,
-			0.5f, 0.5f, 0.5f,  1.0f, 0.0f,
-			0.5f, 0.5f, -.5f,  0.0f, 0.0f,
-		
-			-.5f, 0.5f, 0.5f,  0.0f, 0.0f,
-			-.5f, 0.5f, -.5f,  1.0f, 0.0f,
-			0.5f, 0.5f, -.5f,  1.0f, 1.0f,
-			0.5f, 0.5f, -.5f,  1.0f, 1.0f,
-			0.5f, 0.5f, 0.5f,  0.0f, 1.0f,
-			-.5f, 0.5f, 0.5f,  0.0f, 0.0f,
-		
-			-.5f, -.5f, 0.5f,  0.0f, 0.0f,
-			-.5f, -.5f, -.5f,  1.0f, 0.0f,
-			0.5f, -.5f, -.5f,  1.0f, 1.0f,
-			0.5f, -.5f, -.5f,  1.0f, 1.0f,
-			0.5f, -.5f, 0.5f,  0.0f, 1.0f,
-			-.5f, -.5f, 0.5f,  0.0f, 0.0f,
+			-.5f, 0.5f, 0.5f,  0.0f, 0.0f, 1.0f,
+			-.5f, -.5f, 0.5f,  0.0f, 0.0f, 1.0f,
+			0.5f, -.5f, 0.5f,  0.0f, 0.0f, 1.0f,
+			0.5f, -.5f, 0.5f,  0.0f, 0.0f, 1.0f,
+			0.5f, 0.5f, 0.5f,  0.0f, 0.0f, 1.0f,
+			-.5f, 0.5f, 0.5f,  0.0f, 0.0f, 1.0f,
+
+			-.5f, 0.5f, -.5f,  0.0f, 0.0f,-1.0f,
+			-.5f, -.5f, -.5f,  0.0f, 0.0f,-1.0f,
+			0.5f, -.5f, -.5f,  0.0f, 0.0f,-1.0f,
+			0.5f, -.5f, -.5f,  0.0f, 0.0f,-1.0f,
+			0.5f, 0.5f, -.5f,  0.0f, 0.0f,-1.0f,
+			-.5f, 0.5f, -.5f,  0.0f, 0.0f,-1.0f,
+
+			-.5f, 0.5f, -.5f, -1.0f, 0.0f, 0.0f,
+			-.5f, -.5f, -.5f, -1.0f, 0.0f, 0.0f,
+			-.5f, -.5f, 0.5f, -1.0f, 0.0f, 0.0f,
+			-.5f, -.5f, 0.5f, -1.0f, 0.0f, 0.0f,
+			-.5f, 0.5f, 0.5f, -1.0f, 0.0f, 0.0f,
+			-.5f, 0.5f, -.5f, -1.0f, 0.0f, 0.0f,
+
+			0.5f, 0.5f, -.5f,  1.0f, 0.0f, 0.0f,
+			0.5f, -.5f, -.5f,  1.0f, 0.0f, 0.0f,
+			0.5f, -.5f, 0.5f,  1.0f, 0.0f, 0.0f,
+			0.5f, -.5f, 0.5f,  1.0f, 0.0f, 0.0f,
+			0.5f, 0.5f, 0.5f,  1.0f, 0.0f, 0.0f,
+			0.5f, 0.5f, -.5f,  1.0f, 0.0f, 0.0f,
+
+			-.5f, 0.5f, 0.5f,  0.0f, 1.0f, 0.0f,
+			-.5f, 0.5f, -.5f,  0.0f, 1.0f, 0.0f,
+			0.5f, 0.5f, -.5f,  0.0f, 1.0f, 0.0f,
+			0.5f, 0.5f, -.5f,  0.0f, 1.0f, 0.0f,
+			0.5f, 0.5f, 0.5f,  0.0f, 1.0f, 0.0f,
+			-.5f, 0.5f, 0.5f,  0.0f, 1.0f, 0.0f,
+
+			-.5f, -.5f, 0.5f,  0.0f,-1.0f, 0.0f,
+			-.5f, -.5f, -.5f,  0.0f,-1.0f, 0.0f,
+			0.5f, -.5f, -.5f,  0.0f,-1.0f, 0.0f,
+			0.5f, -.5f, -.5f,  0.0f,-1.0f, 0.0f,
+			0.5f, -.5f, 0.5f,  0.0f,-1.0f, 0.0f,
+			-.5f, -.5f, 0.5f,  0.0f,-1.0f, 0.0f
 		};
 		cubeVAO = new VertexArray();
 		cubeVAO->Bind();
 		cubeVBO = new VertexBuffer(vertices, sizeof(vertices));
 		cubeVBO->Bind();
-		VertexBufferLayout().Push<float>(3).Push<float>(2).Enable();
+		VertexBufferLayout().Push<float>(3).Push<float>(3).Enable();
 		cubeVAO->Unbind();
 		cubeVBO->Unbind();
-		cubeShader = new Shader("Resource/Shader/TexturedCube/cube_shader.vert", "Resource/Shader/TexturedCube/cube_shader.frag");
-		cubeTexture = new Texture("Resource/Texture/container.jpg");
-		cubeShader->Bind();
-		cubeShader->SetUniform("uTexture2D", 0);
+		cubeReflectionShader = new Shader("Resource/Shader/Cubemap/surface_shader.vert", "Resource/Shader/Cubemap/reflection_shader.frag");
+		cubeReflectionShader->Bind();
+		cubeReflectionShader->SetUniform("skybox", 0);
+		cubeRefractionShader = new Shader("Resource/Shader/Cubemap/surface_shader.vert", "Resource/Shader/Cubemap/refraction_shader.frag");
+		cubeRefractionShader->Bind();
+		cubeRefractionShader->SetUniform("skybox", 0);
+		
 		float skyboxVertices[] = {
 			// positions          
 			-1.0f,  1.0f, -1.0f,
@@ -145,7 +148,7 @@ public:
 			}
 			else
 			{
-				std::cout << "Failed to load texture image '" << faces[i] << "'" << std::endl;
+				std::cout << "\033[41m\033[30mERROR::Cubemap\033[0m Failed to load texture image '" << faces[i] << "'" << std::endl;
 			}
 			stbi_image_free(data);
 		}
@@ -164,7 +167,8 @@ public:
 		delete cubemapVBO;
 		delete cubeVAO;
 		delete cubeVBO;
-		delete cubeTexture;
+		delete cubeReflectionShader;
+		delete cubeRefractionShader;
 		glDeleteTextures(1, &cubemapTexture);
 	}
 	void OnUpdate(float dt) override
@@ -210,9 +214,25 @@ public:
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		// Drawing the cube
 		cubeVAO->Bind();
-		cubeShader->Bind();
-		cubeTexture->Bind();
-		cubeShader->SetUniform("uMVP", projection * view);
+		if (useReflection)
+		{
+			cubeReflectionShader->Bind();
+			cubeReflectionShader->SetUniform("viewPos", camera.GetPosition());
+			cubeReflectionShader->SetUniform("projection", projection);
+			cubeReflectionShader->SetUniform("view", view);
+			cubeReflectionShader->SetUniform("model", glm::mat4(0.5f));
+		}
+		else
+		{
+			cubeRefractionShader->Bind();
+			cubeRefractionShader->SetUniform("viewPos", camera.GetPosition());
+			cubeRefractionShader->SetUniform("refractionIndex", refractionIndex);
+			cubeRefractionShader->SetUniform("projection", projection);
+			cubeRefractionShader->SetUniform("view", view);
+			cubeRefractionShader->SetUniform("model", glm::mat4(0.5f));
+		}
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 		cubeVAO->Unbind();
 		// Drawing the skybox (cubemap)
@@ -228,6 +248,25 @@ public:
 		cubemapVAO->Unbind();
 		glDepthFunc(GL_LESS);
 	}
+
+	void OnRenderImGui() override
+	{
+		ImGui::Begin("Edit Window");
+		if (!useReflection)
+		{
+			ImGui::Text("Using Refraction Shader");
+			ImGui::SliderFloat("Refraction Index", &refractionIndex, 1.0f, 5.0f, "%.2f");
+		}
+		else
+		{
+			ImGui::Text("Using Reflection Shader");
+		}
+		if (ImGui::Button("Switch Shader"))
+		{
+			useReflection = !useReflection;
+		}
+		ImGui::End();
+	}
 private:
 	Camera camera{ glm::vec3(0.0f, 0.0f, 3.0f) };
 	VertexArray* cubemapVAO{ nullptr };
@@ -235,9 +274,11 @@ private:
 	Shader* cubemapShader{ nullptr };
 	VertexArray* cubeVAO{ nullptr };
 	VertexBuffer* cubeVBO{ nullptr };
-	Shader* cubeShader{ nullptr };
-	Texture* cubeTexture{ nullptr };
+	Shader* cubeReflectionShader{ nullptr };
+	Shader* cubeRefractionShader{ nullptr };
 	unsigned int cubemapTexture{ 0 };
+	float refractionIndex{ 1.0f };
+	bool useReflection{ false };
 };
 
 #endif
