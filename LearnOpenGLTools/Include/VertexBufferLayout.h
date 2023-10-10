@@ -38,7 +38,7 @@ public:
 		int offset = 0;
 		for (const auto& elem : m_Elements)
 		{
-			glVertexAttribPointer(index, elem.count, elem.type, GL_FALSE, m_Stride, (void*)(offset));
+			glVertexAttribPointer(index, elem.count, elem.type, GL_FALSE, m_Stride, reinterpret_cast<void*>(offset));
 			glEnableVertexAttribArray(index++);
 			offset += elem.count * sizeof(float);
 		}
