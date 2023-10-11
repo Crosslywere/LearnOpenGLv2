@@ -128,6 +128,7 @@ public:
 		// Constructing the view matrix (The view's transform)
 		glm::mat4 view = camera.GetViewMatrix();
 
+		vao->Bind();
 		objectShader->Bind();
 
 		objectShader->SetUniform("uProjection", projection);

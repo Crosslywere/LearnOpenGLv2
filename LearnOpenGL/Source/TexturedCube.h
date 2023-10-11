@@ -97,10 +97,14 @@ public:
 		glm::mat4 projection = glm::perspective(glm::radians(45.0f), Window::GetAspectRatio(), 0.1f, 100.0f);
 		glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -3.0f));
 		model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+		vao->Bind();
+		shader->Bind();
 		shader->SetUniform("uMVP", projection * model);
 		shader->SetUniform("uTexture2D", 0);
+		texture->Bind();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
 	void OnRenderImGui() override
 	{

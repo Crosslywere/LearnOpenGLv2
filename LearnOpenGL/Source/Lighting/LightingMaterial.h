@@ -127,6 +127,7 @@ public:
 		glm::mat4 projection = glm::perspective(glm::radians(camera.FOV), Window::GetAspectRatio(), 0.1f, 100.0f);
 		glm::mat4 view = camera.GetViewMatrix();
 		glm::mat4 model = glm::mat4(1.0f);
+		vao->Bind();
 		objectShader->Bind();
 		objectShader->SetUniform("uProjection", projection);
 		objectShader->SetUniform("uView", view);
