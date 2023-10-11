@@ -1,6 +1,6 @@
 workspace "LearnOpenGLv2"
 architecture "x64"
-configurations { "Debug", "Release" }
+configurations { "Debug" }
 
 -- Dependencies (Static Libraries)
 include "Vendor/glad"

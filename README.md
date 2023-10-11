@@ -179,3 +179,22 @@ This project uses the [premake5](https://premake.github.io) build system.
         All the lights in the scene are calculated for each surface.
         The light sources are then attenuated based on their position and strength (quadratic and linear values) except for the directional light which has a global presense. There are a total of 6 light sources. That is 1 directional light, 4 point lights, and 1 spot light.
         The spot light is tied to the camera's position and front direction so it acts as a flash light.
+
+3. **Cubemaps** Created a cubemap as a skybox. A cubemap is a type of texture. This texture has 6 images attached to itself.
+    These being:
+
+    - `GL_TEXTURE_CUBE_MAP_POSITIVE_X`
+    - `GL_TEXTURE_CUBE_MAP_NEGATIVE_X`
+    - `GL_TEXTURE_CUBE_MAP_POSITIVE_Y`
+    - `GL_TEXTURE_CUBE_MAP_NEGATIVE_Y`
+    - `GL_TEXTURE_CUBE_MAP_POSITIVE_Z`
+    - `GL_TEXTURE_CUBE_MAP_NEGATIVE_Z`
+
+    These textures are all combined into on singular texture being the cubemap. The texture is rendered onto a cube that uses its vertex positions to sample the texture.
+    The cubemap's texture is sampled by using a 3D coordinate of it cube drawn to get its fragment color.
+
+## Backends
+
+1. **Framebuffers** A framebuffer is a buffer on the gpu that will be written to on every frame drawn if bound. Framebuffers can store color data, depth data, stencile data
+    or a combination of these. In the `Window` class a framebuffer is used to capture the color data. This data is stored on an empty texture on the GPU.
+    To then render the output image for the cureent frame, the texture is rendered onto a quad that spans the screen using a simple shader.
